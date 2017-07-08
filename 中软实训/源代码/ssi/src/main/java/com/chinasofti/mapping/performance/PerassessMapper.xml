@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.performance.PerassessMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.performance.Perassess">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="monthtime" jdbcType="DATE" property="monthtime" />
+    <result column="perrank" jdbcType="VARCHAR" property="perrank" />
+    <result column="asspeople" jdbcType="VARCHAR" property="asspeople" />
+    <result column="asstime" jdbcType="DATE" property="asstime" />
+    <result column="createname" jdbcType="VARCHAR" property="createname" />
+    <result column="createdatetime" jdbcType="DATE" property="createdatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, monthtime, perrank, asspeople, asstime, createname, createdatetime
+  </sql>
+  <sql id="Where_List">
+		<where>
+			<if test="uid != null and uid != ''">
+				uid like concat('%',#{uid},'%')
+			</if>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tperassess
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="count" parameterType="com.chinasofti.model.performance.Perassess"
+		resultType="java.lang.Long">
+		select count(*)
+		from tperassess
+		<include refid="Where_List" />
+</select>
+<select id="selectList" parameterType="com.chinasofti.model.performance.Perassess"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tperassess
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'uid'">uid</when>
+			<otherwise>uid</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tperassess
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.performance.Perassess">
+    insert into tperassess (id, uid, monthtime, 
+      perrank, asspeople, asstime, 
+      createname, createdatetime)
+    values (#{id,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{monthtime,jdbcType=DATE}, 
+      #{perrank,jdbcType=VARCHAR}, #{asspeople,jdbcType=VARCHAR}, #{asstime,jdbcType=DATE}, 
+      #{createname,jdbcType=VARCHAR}, #{createdatetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.performance.Perassess">
+    insert into tperassess
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="monthtime != null">
+        monthtime,
+      </if>
+      <if test="perrank != null">
+        perrank,
+      </if>
+      <if test="asspeople != null">
+        asspeople,
+      </if>
+      <if test="asstime != null">
+        asstime,
+      </if>
+      <if test="createname != null">
+        createname,
+      </if>
+      <if test="createdatetime != null">
+        createdatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="monthtime != null">
+        #{monthtime,jdbcType=DATE},
+      </if>
+      <if test="perrank != null">
+        #{perrank,jdbcType=VARCHAR},
+      </if>
+      <if test="asspeople != null">
+        #{asspeople,jdbcType=VARCHAR},
+      </if>
+      <if test="asstime != null">
+        #{asstime,jdbcType=DATE},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdatetime != null">
+        #{createdatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.performance.Perassess">
+    update tperassess
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="monthtime != null">
+        monthtime = #{monthtime,jdbcType=DATE},
+      </if>
+      <if test="perrank != null">
+        perrank = #{perrank,jdbcType=VARCHAR},
+      </if>
+      <if test="asspeople != null">
+        asspeople = #{asspeople,jdbcType=VARCHAR},
+      </if>
+      <if test="asstime != null">
+        asstime = #{asstime,jdbcType=DATE},
+      </if>
+      <if test="createname != null">
+        createname = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdatetime != null">
+        createdatetime = #{createdatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.performance.Perassess">
+    update tperassess
+    set uid = #{uid,jdbcType=VARCHAR},
+      monthtime = #{monthtime,jdbcType=DATE},
+      perrank = #{perrank,jdbcType=VARCHAR},
+      asspeople = #{asspeople,jdbcType=VARCHAR},
+      asstime = #{asstime,jdbcType=DATE},
+      createname = #{createname,jdbcType=VARCHAR},
+      createdatetime = #{createdatetime,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

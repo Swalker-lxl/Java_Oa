@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.performance.PerssMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.performance.Perss">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="monthtime" jdbcType="DATE" property="monthtime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="createname" jdbcType="VARCHAR" property="createname" />
+    <result column="createdatetime" jdbcType="DATE" property="createdatetime" />
+    <result column="modifyname" jdbcType="VARCHAR" property="modifyname" />
+    <result column="modifydatetime" jdbcType="DATE" property="modifydatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, monthtime, state, createname, createdatetime, modifyname, modifydatetime
+  </sql>
+  <sql id="Where_List">
+		<where>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tperss
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="count" parameterType="com.chinasofti.model.performance.Perss"
+		resultType="java.lang.Long">
+		select count(*)
+		from tperss
+		<include refid="Where_List" />
+</select>
+<select id="selectList" parameterType="com.chinasofti.model.performance.Perss"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tperss
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'monthtime'">monthtime</when>
+			<otherwise>monthtime</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tperss
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.performance.Perss">
+    insert into tperss (id, monthtime, state, 
+      createname, createdatetime, modifyname, 
+      modifydatetime)
+    values (#{id,jdbcType=VARCHAR}, #{monthtime,jdbcType=DATE}, #{state,jdbcType=VARCHAR}, 
+      #{createname,jdbcType=VARCHAR}, #{createdatetime,jdbcType=DATE}, #{modifyname,jdbcType=VARCHAR}, 
+      #{modifydatetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.performance.Perss">
+    insert into tperss
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="monthtime != null">
+        monthtime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="createname != null">
+        createname,
+      </if>
+      <if test="createdatetime != null">
+        createdatetime,
+      </if>
+      <if test="modifyname != null">
+        modifyname,
+      </if>
+      <if test="modifydatetime != null">
+        modifydatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="monthtime != null">
+        #{monthtime,jdbcType=DATE},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdatetime != null">
+        #{createdatetime,jdbcType=DATE},
+      </if>
+      <if test="modifyname != null">
+        #{modifyname,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydatetime != null">
+        #{modifydatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.performance.Perss">
+    update tperss
+    <set>
+      <if test="monthtime != null">
+        monthtime = #{monthtime,jdbcType=DATE},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createname != null">
+        createname = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdatetime != null">
+        createdatetime = #{createdatetime,jdbcType=DATE},
+      </if>
+      <if test="modifyname != null">
+        modifyname = #{modifyname,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydatetime != null">
+        modifydatetime = #{modifydatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.performance.Perss">
+    update tperss
+    set monthtime = #{monthtime,jdbcType=DATE},
+      state = #{state,jdbcType=VARCHAR},
+      createname = #{createname,jdbcType=VARCHAR},
+      createdatetime = #{createdatetime,jdbcType=DATE},
+      modifyname = #{modifyname,jdbcType=VARCHAR},
+      modifydatetime = #{modifydatetime,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

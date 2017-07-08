@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.employee.EmployeeFileMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.employee.EmployeeFile">
+    <id column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="filetime" jdbcType="TIMESTAMP" property="filetime" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="idnumber" jdbcType="VARCHAR" property="idnumber" />
+    <result column="rigin" jdbcType="VARCHAR" property="rigin" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="degree" jdbcType="VARCHAR" property="degree" />
+    <result column="ps" jdbcType="VARCHAR" property="ps" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="major" jdbcType="VARCHAR" property="major" />
+    <result column="workexp" jdbcType="VARCHAR" property="workexp" />
+    <result column="homeadd" jdbcType="VARCHAR" property="homeadd" />
+    <result column="addname" jdbcType="VARCHAR" property="addname" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="updatename" jdbcType="VARCHAR" property="updatename" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tid, filetime, id, idnumber, rigin, education, degree, ps, school, major, workexp, 
+    homeadd, addname, addtime, updatename, updatetime
+  </sql>
+  <sql id="Where_List">
+		<where>
+			<if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+			<if test="tid !=null and tid != ''">
+				and tid like concat('%',#{tid},'%')
+			</if>
+		</where>
+	</sql>
+	<sql id="Where_List2">
+		<where>
+			t1.id = t2.id
+			<if test="id != null and id != ''">
+				and t1.id like concat('%',#{id},'%')
+			</if>
+			<if test="tid !=null and tid != ''">
+				and tid like concat('%',#{tid},'%')
+			</if>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select
+		t1.tid,
+		t1.id,
+		t1.idnumber,
+		t1.rigin,
+		t1.education,
+		t1.degree,
+		t1.ps,
+		t1.school,
+		t1.major,
+		t1.workexp,
+		t1.homeadd,
+		t1.addname,
+		t1.addtime,
+		t1.updatename,
+		t1.updatetime,
+		t2.name
+		from tstafffile t1,
+		tstaffinf t2
+		where t1.id = t2.id
+    	and t1.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="count" parameterType="com.chinasofti.model.employee.EmployeeFile" resultType="java.lang.Long">
+		select count(*)
+		from tstafffile
+		<include refid="Where_List" />
+  </select>
+  <select id="selectList" parameterType="com.chinasofti.model.employee.EmployeeFile" resultMap="BaseResultMap">
+		select
+		t1.tid,
+		t1.id,
+		t1.idnumber,
+		t1.rigin,
+		t1.education,
+		t1.degree,
+		t1.ps,
+		t1.school,
+		t1.major,
+		t1.workexp,
+		t1.homeadd,
+		t1.addname,
+		t1.addtime,
+		t1.updatename,
+		t1.updatetime,
+		t2.name
+		from tstafffile t1,
+		tstaffinf t2
+		<include refid="Where_List2" />
+		
+		limit #{page} , #{rows}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tstafffile
+    where tid = #{tid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.employee.EmployeeFile">
+    insert into tstafffile (tid, filetime, id, 
+      idnumber, rigin, education, 
+      degree, ps, school, 
+      major, workexp, homeadd, 
+      addname, addtime, updatename, 
+      updatetime)
+    values (#{tid,jdbcType=VARCHAR}, #{filetime,jdbcType=TIMESTAMP}, #{id,jdbcType=VARCHAR}, 
+      #{idnumber,jdbcType=VARCHAR}, #{rigin,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
+      #{degree,jdbcType=VARCHAR}, #{ps,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
+      #{major,jdbcType=VARCHAR}, #{workexp,jdbcType=VARCHAR}, #{homeadd,jdbcType=VARCHAR}, 
+      #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.employee.EmployeeFile">
+    insert into tstafffile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="filetime != null">
+        filetime,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="idnumber != null">
+        idnumber,
+      </if>
+      <if test="rigin != null">
+        rigin,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="degree != null">
+        degree,
+      </if>
+      <if test="ps != null">
+        ps,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="major != null">
+        major,
+      </if>
+      <if test="workexp != null">
+        workexp,
+      </if>
+      <if test="homeadd != null">
+        homeadd,
+      </if>
+      <if test="addname != null">
+        addname,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="updatename != null">
+        updatename,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="filetime != null">
+        #{filetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="idnumber != null">
+        #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="rigin != null">
+        #{rigin,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null">
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="ps != null">
+        #{ps,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null">
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="workexp != null">
+        #{workexp,jdbcType=VARCHAR},
+      </if>
+      <if test="homeadd != null">
+        #{homeadd,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.employee.EmployeeFile">
+    update tstafffile
+    <set>
+      <if test="filetime != null">
+        filetime = #{filetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="id != null">
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="idnumber != null">
+        idnumber = #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="rigin != null">
+        rigin = #{rigin,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null">
+        degree = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="ps != null">
+        ps = #{ps,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null">
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="workexp != null">
+        workexp = #{workexp,jdbcType=VARCHAR},
+      </if>
+      <if test="homeadd != null">
+        homeadd = #{homeadd,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        addname = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updatename = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.employee.EmployeeFile">
+    update tstafffile
+    set filetime = #{filetime,jdbcType=TIMESTAMP},
+      id = #{id,jdbcType=VARCHAR},
+      idnumber = #{idnumber,jdbcType=VARCHAR},
+      rigin = #{rigin,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=VARCHAR},
+      ps = #{ps,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      workexp = #{workexp,jdbcType=VARCHAR},
+      homeadd = #{homeadd,jdbcType=VARCHAR},
+      addname = #{addname,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      updatename = #{updatename,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where tid = #{tid,jdbcType=VARCHAR}
+  </update>
+</mapper>

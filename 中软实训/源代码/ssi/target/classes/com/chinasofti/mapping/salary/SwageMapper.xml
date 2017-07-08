@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.salary.SwageMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.salary.Swage">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="basewage" jdbcType="DOUBLE" property="basewage" />
+    <result column="meriwag" jdbcType="DOUBLE" property="meriwag" />
+    <result column="waward" jdbcType="DOUBLE" property="waward" />
+    <result column="wbank" jdbcType="VARCHAR" property="wbank" />
+    <result column="wrank" jdbcType="VARCHAR" property="wrank" />
+    <result column="createtime" jdbcType="DATE" property="createtime" />
+    <result column="createid" jdbcType="VARCHAR" property="createid" />
+    <result column="modifytime" jdbcType="DATE" property="modifytime" />
+    <result column="modifyid" jdbcType="VARCHAR" property="modifyid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, basewage, meriwag, waward, wbank, wrank, createtime, createid, modifytime, modifyid
+  </sql>
+  
+  	<sql id="Where_List">
+		<where>
+			<if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+			<if test="modifyid !=null and modifyid != ''">
+				and modifyid like concat('%',#{modifyid},'%')
+			</if>
+		</where>
+	</sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tswage
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  	<select id="selectList" parameterType="com.chinasofti.model.salary.Swage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tswage
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'id'">id</when>
+			<when test="sort == 'basewage'">basewage</when>
+			<otherwise>id</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+		<select id="count" parameterType="com.chinasofti.model.salary.Swage" resultType="java.lang.Long">
+		select count(*)
+		from tswage
+		<include refid="Where_List" />
+	</select>
+	
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tswage
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.salary.Swage">
+    insert into tswage (id, basewage, meriwag, 
+      waward, wbank, wrank, 
+      createtime, createid, modifytime, 
+      modifyid)
+    values (#{id,jdbcType=VARCHAR}, #{basewage,jdbcType=DOUBLE}, #{meriwag,jdbcType=DOUBLE}, 
+      #{waward,jdbcType=DOUBLE}, #{wbank,jdbcType=VARCHAR}, #{wrank,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=DATE}, #{createid,jdbcType=VARCHAR}, #{modifytime,jdbcType=DATE}, 
+      #{modifyid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.salary.Swage">
+    insert into tswage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="basewage != null">
+        basewage,
+      </if>
+      <if test="meriwag != null">
+        meriwag,
+      </if>
+      <if test="waward != null">
+        waward,
+      </if>
+      <if test="wbank != null">
+        wbank,
+      </if>
+      <if test="wrank != null">
+        wrank,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="createid != null">
+        createid,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+      <if test="modifyid != null">
+        modifyid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="basewage != null">
+        #{basewage,jdbcType=DOUBLE},
+      </if>
+      <if test="meriwag != null">
+        #{meriwag,jdbcType=DOUBLE},
+      </if>
+      <if test="waward != null">
+        #{waward,jdbcType=DOUBLE},
+      </if>
+      <if test="wbank != null">
+        #{wbank,jdbcType=VARCHAR},
+      </if>
+      <if test="wrank != null">
+        #{wrank,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="createid != null">
+        #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="modifyid != null">
+        #{modifyid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.salary.Swage">
+    update tswage
+    <set>
+      <if test="basewage != null">
+        basewage = #{basewage,jdbcType=DOUBLE},
+      </if>
+      <if test="meriwag != null">
+        meriwag = #{meriwag,jdbcType=DOUBLE},
+      </if>
+      <if test="waward != null">
+        waward = #{waward,jdbcType=DOUBLE},
+      </if>
+      <if test="wbank != null">
+        wbank = #{wbank,jdbcType=VARCHAR},
+      </if>
+      <if test="wrank != null">
+        wrank = #{wrank,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="createid != null">
+        createid = #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="modifyid != null">
+        modifyid = #{modifyid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.salary.Swage">
+    update tswage
+    set basewage = #{basewage,jdbcType=DOUBLE},
+      meriwag = #{meriwag,jdbcType=DOUBLE},
+      waward = #{waward,jdbcType=DOUBLE},
+      wbank = #{wbank,jdbcType=VARCHAR},
+      wrank = #{wrank,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=DATE},
+      createid = #{createid,jdbcType=VARCHAR},
+      modifytime = #{modifytime,jdbcType=DATE},
+      modifyid = #{modifyid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

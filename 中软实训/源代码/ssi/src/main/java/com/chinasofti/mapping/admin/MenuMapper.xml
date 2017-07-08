@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.admin.MenuMapper">
+	<resultMap id="BaseResultMap" type="com.chinasofti.model.admin.Menu">
+		<id column="CID" jdbcType="VARCHAR" property="cid" />
+		<result column="CICONCLS" jdbcType="VARCHAR" property="ciconcls" />
+		<result column="CNAME" jdbcType="VARCHAR" property="cname" />
+		<result column="CSEQ" jdbcType="DECIMAL" property="cseq" />
+		<result column="CURL" jdbcType="VARCHAR" property="curl" />
+		<result column="CPID" jdbcType="VARCHAR" property="cpid" />
+		<collection property="children" ofType="com.chinasofti.model.admin.Menu">
+			<id column="ID" jdbcType="VARCHAR" property="cid" />
+			<result column="ICONCLS" jdbcType="VARCHAR" property="ciconcls" />
+			<result column="NAME" jdbcType="VARCHAR" property="cname" />
+			<result column="SEQ" jdbcType="DECIMAL" property="cseq" />
+			<result column="URL" jdbcType="VARCHAR" property="curl" />
+		</collection>
+	</resultMap>
+	<sql id="Base_Column_List">
+		cid, ciconcls, cname, cseq, curl, cpid
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		t1.cid,
+		t1.ciconcls,
+		t1.cname,
+		t1.cseq,
+		t1.curl,
+		t1.cpid,
+		t2.cid as id,
+		t2.ciconcls as iconcls,
+		t2.cname as name,
+		t2.cseq as seq,
+		t2.curl as url
+		from tmenu t1
+		left join tmenu t2
+		on t1.cid = t2.cpid
+		where t1.cid = #{cid,jdbcType=VARCHAR} order by t2.cseq
+	</select>
+	<select id="selectRoot" resultMap="BaseResultMap">
+		select
+		t1.cid,
+		t1.ciconcls,
+		t1.cname,
+		t1.cseq,
+		t1.curl,
+		t1.cpid,
+		t2.cid as id,
+		t2.ciconcls as iconcls,
+		t2.cname as name,
+		t2.cseq as seq,
+		t2.curl as url
+		from tmenu t1
+		left join tmenu t2
+		on t1.cid = t2.cpid
+		where t1.cpid is null order by t2.cseq
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from tmenu
+		where cid = #{cid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.chinasofti.model.admin.Menu">
+		insert into tmenu (cid, ciconcls, cname,
+		cseq, curl, cpid)
+		values (#{cid,jdbcType=VARCHAR}, #{ciconcls,jdbcType=VARCHAR},
+		#{cname,jdbcType=VARCHAR},
+		#{cseq,jdbcType=DECIMAL}, #{curl,jdbcType=VARCHAR}, #{cpid,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.chinasofti.model.admin.Menu">
+		insert into tmenu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cid != null and '' != cid">
+				cid,
+			</if>
+			<if test="ciconcls != null and '' != ciconcls">
+				ciconcls,
+			</if>
+			<if test="cname != null and '' != cname">
+				cname,
+			</if>
+			<if test="cseq != null and '' != cseq">
+				cseq,
+			</if>
+			<if test="curl != null and '' != curl">
+				curl,
+			</if>
+			<if test="cpid != null and '' != cpid">
+				cpid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cid != null and '' != cid">
+				#{cid,jdbcType=VARCHAR},
+			</if>
+			<if test="ciconcls != null and '' != ciconcls">
+				#{ciconcls,jdbcType=VARCHAR},
+			</if>
+			<if test="cname != null and '' != cname">
+				#{cname,jdbcType=VARCHAR},
+			</if>
+			<if test="cseq != null and '' != cseq">
+				#{cseq,jdbcType=DECIMAL},
+			</if>
+			<if test="curl != null and '' != curl">
+				#{curl,jdbcType=VARCHAR},
+			</if>
+			<if test="cpid != null and '' != cpid">
+				#{cpid,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.admin.Menu">
+		update tmenu
+		<set>
+			<if test="ciconcls != null and '' != ciconcls">
+				ciconcls = #{ciconcls,jdbcType=VARCHAR},
+			</if>
+			<if test="cname != null and '' != cname">
+				cname = #{cname,jdbcType=VARCHAR},
+			</if>
+			<if test="cseq != null and '' != cseq">
+				cseq = #{cseq,jdbcType=DECIMAL},
+			</if>
+			<if test="curl != null and '' != curl">
+				curl = #{curl,jdbcType=VARCHAR},
+			</if>
+			<if test="cpid != null and '' != cpid">
+				cpid = #{cpid,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where cid = #{cid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.chinasofti.model.admin.Menu">
+		update tmenu
+		set ciconcls = #{ciconcls,jdbcType=VARCHAR},
+		cname = #{cname,jdbcType=VARCHAR},
+		cseq = #{cseq,jdbcType=DECIMAL},
+		curl = #{curl,jdbcType=VARCHAR},
+		cpid = #{cpid,jdbcType=VARCHAR}
+		where cid = #{cid,jdbcType=VARCHAR}
+	</update>
+</mapper>

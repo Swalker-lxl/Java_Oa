@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.base.AttMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.base.Att">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="attdate" jdbcType="DATE" property="attdate" />
+    <result column="atworktime" jdbcType="DATE" property="atworktime" />
+    <result column="offtime" jdbcType="DATE" property="offtime" />
+    <result column="errorstate" jdbcType="VARCHAR" property="errorstate" />
+    <result column="attappss" jdbcType="VARCHAR" property="attappss" />
+    <result column="addname" jdbcType="VARCHAR" property="addname" />
+    <result column="addtime" jdbcType="DATE" property="addtime" />
+    <result column="updatename" jdbcType="VARCHAR" property="updatename" />
+    <result column="updatetime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, attdate, atworktime, offtime, errorstate, attappss, addname, addtime, updatename, 
+    updatetime
+  </sql>
+  <sql id="Where_List">
+		<where>
+			<if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+			<if test="name !=null and name != ''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="attdate !=null and attdate != ''">
+				and attdate like concat('%',#{attdate},'%')
+			</if>
+			<if test="errorstate !=null and errorstate != ''">
+				and errorstate like concat('%',#{errorstate},'%')
+			</if>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tattselect
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  	<select id="count" parameterType="com.chinasofti.model.base.Att" resultType="java.lang.Long">
+		select count(*)
+		from tattselect
+		<include refid="Where_List" />
+	</select>
+	<select id="selectList" parameterType="com.chinasofti.model.base.Att" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tattselect
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'id'">id</when>
+			<when test="sort == 'name'">name</when>
+			<when test="sort == 'attdate'">attdate</when>
+			<when test="sort == 'errorstate'">errorstate</when>
+			<otherwise>id</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tattselect
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.base.Att">
+    insert into tattselect (id, name, attdate, 
+      atworktime, offtime, errorstate, 
+      attappss, addname, addtime, 
+      updatename, updatetime)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{attdate,jdbcType=DATE}, 
+      #{atworktime,jdbcType=DATE}, #{offtime,jdbcType=DATE}, #{errorstate,jdbcType=VARCHAR}, 
+      #{attappss,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=DATE}, 
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.base.Att">
+    insert into tattselect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="attdate != null">
+        attdate,
+      </if>
+      <if test="atworktime != null">
+        atworktime,
+      </if>
+      <if test="offtime != null">
+        offtime,
+      </if>
+      <if test="errorstate != null">
+        errorstate,
+      </if>
+      <if test="attappss != null">
+        attappss,
+      </if>
+      <if test="addname != null">
+        addname,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="updatename != null">
+        updatename,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="attdate != null">
+        #{attdate,jdbcType=DATE},
+      </if>
+      <if test="atworktime != null">
+        #{atworktime,jdbcType=DATE},
+      </if>
+      <if test="offtime != null">
+        #{offtime,jdbcType=DATE},
+      </if>
+      <if test="errorstate != null">
+        #{errorstate,jdbcType=VARCHAR},
+      </if>
+      <if test="attappss != null">
+        #{attappss,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.base.Att">
+    update tattselect
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="attdate != null">
+        attdate = #{attdate,jdbcType=DATE},
+      </if>
+      <if test="atworktime != null">
+        atworktime = #{atworktime,jdbcType=DATE},
+      </if>
+      <if test="offtime != null">
+        offtime = #{offtime,jdbcType=DATE},
+      </if>
+      <if test="errorstate != null">
+        errorstate = #{errorstate,jdbcType=VARCHAR},
+      </if>
+      <if test="attappss != null">
+        attappss = #{attappss,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        addname = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        addtime = #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatename != null">
+        updatename = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.base.Att">
+    update tattselect
+    set name = #{name,jdbcType=VARCHAR},
+      attdate = #{attdate,jdbcType=DATE},
+      atworktime = #{atworktime,jdbcType=DATE},
+      offtime = #{offtime,jdbcType=DATE},
+      errorstate = #{errorstate,jdbcType=VARCHAR},
+      attappss = #{attappss,jdbcType=VARCHAR},
+      addname = #{addname,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=DATE},
+      updatename = #{updatename,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

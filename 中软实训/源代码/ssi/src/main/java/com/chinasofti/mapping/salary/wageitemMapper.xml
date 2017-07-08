@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.salary.wageitemMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.salary.wageitem">
+    <id column="waid" jdbcType="VARCHAR" property="waid" />
+    <result column="wuid" jdbcType="VARCHAR" property="wuid" />
+    <result column="basewage" jdbcType="DOUBLE" property="basewage" />
+    <result column="meritwage" jdbcType="DOUBLE" property="meritwage" />
+    <result column="bouns" jdbcType="DOUBLE" property="bouns" />
+    <result column="deductions" jdbcType="DOUBLE" property="deductions" />
+    <result column="dedfiveone" jdbcType="DOUBLE" property="dedfiveone" />
+    <result column="wagetime" jdbcType="VARCHAR" property="wagetime" />
+    <result column="shsend" jdbcType="DOUBLE" property="shsend" />
+    <result column="realsend" jdbcType="DOUBLE" property="realsend" />
+    <result column="createname" jdbcType="VARCHAR" property="createname" />
+    <result column="createtime" jdbcType="DATE" property="createtime" />
+    <result column="modifyname" jdbcType="VARCHAR" property="modifyname" />
+    <result column="modifytime" jdbcType="DATE" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    waid, wuid, basewage, meritwage, bouns, deductions, dedfiveone, wagetime, shsend, 
+    realsend, createname, createtime, modifyname, modifytime
+  </sql>
+  <sql id="Where_List">
+		<where>
+			<if test="waid != null and waid != ''">
+				waid like concat('%',#{waid},'%')
+			</if>
+			<if test="wuid !=null and wuid != ''">
+				and wuid like concat('%',#{wuid},'%')
+			</if>
+		</where>
+	</sql>
+	<select id="selectList" parameterType="com.chinasofti.model.salary.wageitem" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from twageitem
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'waid'">waid</when>
+			<when test="sort == 'wuid'">wuid</when>
+			<otherwise>cid</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+	<select id="count" parameterType="com.chinasofti.model.salary.wageitem" resultType="java.lang.Long">
+		select count(*)
+		from twageitem
+		<include refid="Where_List" />
+	</select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from twageitem
+    where waid = #{waid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from twageitem
+    where waid = #{waid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.salary.wageitem">
+    insert into twageitem (waid, wuid, basewage, 
+      meritwage, bouns, deductions, 
+      dedfiveone, wagetime, shsend, 
+      realsend, createname, createtime, 
+      modifyname, modifytime)
+    values (#{waid,jdbcType=VARCHAR}, #{wuid,jdbcType=VARCHAR}, #{basewage,jdbcType=DOUBLE}, 
+      #{meritwage,jdbcType=DOUBLE}, #{bouns,jdbcType=DOUBLE}, #{deductions,jdbcType=DOUBLE}, 
+      #{dedfiveone,jdbcType=DOUBLE}, #{wagetime,jdbcType=VARCHAR}, #{shsend,jdbcType=DOUBLE}, 
+      #{realsend,jdbcType=DOUBLE}, #{createname,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}, 
+      #{modifyname,jdbcType=VARCHAR}, #{modifytime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.salary.wageitem">
+    insert into twageitem
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="waid != null">
+        waid,
+      </if>
+      <if test="wuid != null">
+        wuid,
+      </if>
+      <if test="basewage != null">
+        basewage,
+      </if>
+      <if test="meritwage != null">
+        meritwage,
+      </if>
+      <if test="bouns != null">
+        bouns,
+      </if>
+      <if test="deductions != null">
+        deductions,
+      </if>
+      <if test="dedfiveone != null">
+        dedfiveone,
+      </if>
+      <if test="wagetime != null">
+        wagetime,
+      </if>
+      <if test="shsend != null">
+        shsend,
+      </if>
+      <if test="realsend != null">
+        realsend,
+      </if>
+      <if test="createname != null">
+        createname,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="modifyname != null">
+        modifyname,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="waid != null">
+        #{waid,jdbcType=VARCHAR},
+      </if>
+      <if test="wuid != null">
+        #{wuid,jdbcType=VARCHAR},
+      </if>
+      <if test="basewage != null">
+        #{basewage,jdbcType=DOUBLE},
+      </if>
+      <if test="meritwage != null">
+        #{meritwage,jdbcType=DOUBLE},
+      </if>
+      <if test="bouns != null">
+        #{bouns,jdbcType=DOUBLE},
+      </if>
+      <if test="deductions != null">
+        #{deductions,jdbcType=DOUBLE},
+      </if>
+      <if test="dedfiveone != null">
+        #{dedfiveone,jdbcType=DOUBLE},
+      </if>
+      <if test="wagetime != null">
+        #{wagetime,jdbcType=VARCHAR},
+      </if>
+      <if test="shsend != null">
+        #{shsend,jdbcType=DOUBLE},
+      </if>
+      <if test="realsend != null">
+        #{realsend,jdbcType=DOUBLE},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifyname != null">
+        #{modifyname,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.salary.wageitem">
+    update twageitem
+    <set>
+      <if test="wuid != null">
+        wuid = #{wuid,jdbcType=VARCHAR},
+      </if>
+      <if test="basewage != null">
+        basewage = #{basewage,jdbcType=DOUBLE},
+      </if>
+      <if test="meritwage != null">
+        meritwage = #{meritwage,jdbcType=DOUBLE},
+      </if>
+      <if test="bouns != null">
+        bouns = #{bouns,jdbcType=DOUBLE},
+      </if>
+      <if test="deductions != null">
+        deductions = #{deductions,jdbcType=DOUBLE},
+      </if>
+      <if test="dedfiveone != null">
+        dedfiveone = #{dedfiveone,jdbcType=DOUBLE},
+      </if>
+      <if test="wagetime != null">
+        wagetime = #{wagetime,jdbcType=VARCHAR},
+      </if>
+      <if test="shsend != null">
+        shsend = #{shsend,jdbcType=DOUBLE},
+      </if>
+      <if test="realsend != null">
+        realsend = #{realsend,jdbcType=DOUBLE},
+      </if>
+      <if test="createname != null">
+        createname = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="modifyname != null">
+        modifyname = #{modifyname,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=DATE},
+      </if>
+    </set>
+    where waid = #{waid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.salary.wageitem">
+    update twageitem
+    set wuid = #{wuid,jdbcType=VARCHAR},
+      basewage = #{basewage,jdbcType=DOUBLE},
+      meritwage = #{meritwage,jdbcType=DOUBLE},
+      bouns = #{bouns,jdbcType=DOUBLE},
+      deductions = #{deductions,jdbcType=DOUBLE},
+      dedfiveone = #{dedfiveone,jdbcType=DOUBLE},
+      wagetime = #{wagetime,jdbcType=VARCHAR},
+      shsend = #{shsend,jdbcType=DOUBLE},
+      realsend = #{realsend,jdbcType=DOUBLE},
+      createname = #{createname,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=DATE},
+      modifyname = #{modifyname,jdbcType=VARCHAR},
+      modifytime = #{modifytime,jdbcType=DATE}
+    where waid = #{waid,jdbcType=VARCHAR}
+  </update>
+</mapper>

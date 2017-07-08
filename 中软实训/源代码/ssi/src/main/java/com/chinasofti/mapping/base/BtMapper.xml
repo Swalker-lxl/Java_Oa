@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.base.BtMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.base.Bt">
+    <id column="btid" jdbcType="VARCHAR" property="btid" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="btsdate" jdbcType="DATE" property="btsdate" />
+    <result column="btedate" jdbcType="DATE" property="btedate" />
+    <result column="btplace" jdbcType="VARCHAR" property="btplace" />
+    <result column="btvehicle" jdbcType="VARCHAR" property="btvehicle" />
+    <result column="btexplain" jdbcType="VARCHAR" property="btexplain" />
+    <result column="btapprover" jdbcType="VARCHAR" property="btapprover" />
+    <result column="attappss" jdbcType="VARCHAR" property="attappss" />
+    <result column="btappdate" jdbcType="DATE" property="btappdate" />
+    <result column="addname" jdbcType="VARCHAR" property="addname" />
+    <result column="addtime" jdbcType="DATE" property="addtime" />
+    <result column="updatename" jdbcType="VARCHAR" property="updatename" />
+    <result column="updatetime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    btid, id, name, btsdate, btedate, btplace, btvehicle, btexplain, btapprover, attappss, 
+    btappdate, addname, addtime, updatename, updatetime
+  </sql>
+  	<sql id="Where_List">
+		<where>
+			<if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+			<if test="name !=null and name != ''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="btsdate !=null and btsdate != ''">
+				and btsdate like concat('%',#{btsdate},'%')
+			</if>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbtselect
+    where btid = #{btid,jdbcType=VARCHAR}
+  </select>
+  	<select id="count" parameterType="com.chinasofti.model.base.Bt" resultType="java.lang.Long">
+		select count(*)
+		from tbtselect
+		<include refid="Where_List" />
+	</select>
+	<select id="selectList" parameterType="com.chinasofti.model.base.Bt" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tbtselect
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'id'">id</when>
+			<when test="sort == 'name'">name</when>
+			<when test="sort == 'btsdate'">btsdate</when>
+			<otherwise>id</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tbtselect
+    where btid = #{btid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.base.Bt">
+    insert into tbtselect (btid, id, name, 
+      btsdate, btedate, btplace, 
+      btvehicle, btexplain, btapprover, 
+      attappss, btappdate, addname, 
+      addtime, updatename, updatetime
+      )
+    values (#{btid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{btsdate,jdbcType=DATE}, #{btedate,jdbcType=DATE}, #{btplace,jdbcType=VARCHAR}, 
+      #{btvehicle,jdbcType=VARCHAR}, #{btexplain,jdbcType=VARCHAR}, #{btapprover,jdbcType=VARCHAR}, 
+      #{attappss,jdbcType=VARCHAR}, #{btappdate,jdbcType=DATE}, #{addname,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=DATE}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.base.Bt">
+    insert into tbtselect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="btid != null">
+        btid,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="btsdate != null">
+        btsdate,
+      </if>
+      <if test="btedate != null">
+        btedate,
+      </if>
+      <if test="btplace != null">
+        btplace,
+      </if>
+      <if test="btvehicle != null">
+        btvehicle,
+      </if>
+      <if test="btexplain != null">
+        btexplain,
+      </if>
+      <if test="btapprover != null">
+        btapprover,
+      </if>
+      <if test="attappss != null">
+        attappss,
+      </if>
+      <if test="btappdate != null">
+        btappdate,
+      </if>
+      <if test="addname != null">
+        addname,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="updatename != null">
+        updatename,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="btid != null">
+        #{btid,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="btsdate != null">
+        #{btsdate,jdbcType=DATE},
+      </if>
+      <if test="btedate != null">
+        #{btedate,jdbcType=DATE},
+      </if>
+      <if test="btplace != null">
+        #{btplace,jdbcType=VARCHAR},
+      </if>
+      <if test="btvehicle != null">
+        #{btvehicle,jdbcType=VARCHAR},
+      </if>
+      <if test="btexplain != null">
+        #{btexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="btapprover != null">
+        #{btapprover,jdbcType=VARCHAR},
+      </if>
+      <if test="attappss != null">
+        #{attappss,jdbcType=VARCHAR},
+      </if>
+      <if test="btappdate != null">
+        #{btappdate,jdbcType=DATE},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.base.Bt">
+    update tbtselect
+    <set>
+      <if test="id != null">
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="btsdate != null">
+        btsdate = #{btsdate,jdbcType=DATE},
+      </if>
+      <if test="btedate != null">
+        btedate = #{btedate,jdbcType=DATE},
+      </if>
+      <if test="btplace != null">
+        btplace = #{btplace,jdbcType=VARCHAR},
+      </if>
+      <if test="btvehicle != null">
+        btvehicle = #{btvehicle,jdbcType=VARCHAR},
+      </if>
+      <if test="btexplain != null">
+        btexplain = #{btexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="btapprover != null">
+        btapprover = #{btapprover,jdbcType=VARCHAR},
+      </if>
+      <if test="attappss != null">
+        attappss = #{attappss,jdbcType=VARCHAR},
+      </if>
+      <if test="btappdate != null">
+        btappdate = #{btappdate,jdbcType=DATE},
+      </if>
+      <if test="addname != null">
+        addname = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        addtime = #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatename != null">
+        updatename = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where btid = #{btid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.base.Bt">
+    update tbtselect
+    set id = #{id,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      btsdate = #{btsdate,jdbcType=DATE},
+      btedate = #{btedate,jdbcType=DATE},
+      btplace = #{btplace,jdbcType=VARCHAR},
+      btvehicle = #{btvehicle,jdbcType=VARCHAR},
+      btexplain = #{btexplain,jdbcType=VARCHAR},
+      btapprover = #{btapprover,jdbcType=VARCHAR},
+      attappss = #{attappss,jdbcType=VARCHAR},
+      btappdate = #{btappdate,jdbcType=DATE},
+      addname = #{addname,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=DATE},
+      updatename = #{updatename,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=DATE}
+    where btid = #{btid,jdbcType=VARCHAR}
+  </update>
+</mapper>

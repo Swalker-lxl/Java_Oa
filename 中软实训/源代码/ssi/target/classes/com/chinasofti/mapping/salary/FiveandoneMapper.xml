@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.salary.FiveandoneMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.salary.Fiveandone">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="fname" jdbcType="VARCHAR" property="fname" />
+    <result column="scale" jdbcType="DOUBLE" property="scale" />
+    <result column="createtime" jdbcType="DATE" property="createtime" />
+    <result column="createname" jdbcType="VARCHAR" property="createname" />
+    <result column="modifytime" jdbcType="DATE" property="modifytime" />
+    <result column="modifyname" jdbcType="VARCHAR" property="modifyname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, fname, scale, createtime, createname, modifytime, modifyname
+  </sql>
+  	<sql id="Where_List">
+		<where>
+			
+			<if test="fname !=null and fname != ''">
+				and fname like concat('%',#{fname},'%')
+			</if><if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select  
+    <include refid="Base_Column_List" />
+    from tfiveandone
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  	<select id="selectList" parameterType="com.chinasofti.model.salary.Fiveandone" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tfiveandone
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'id'">id</when>
+			<when test="sort == 'fname'">cname</when>
+			<otherwise>id</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+  	<select id="count" parameterType="com.chinasofti.model.salary.Fiveandone" resultType="java.lang.Long">
+		select count(*)
+		from tfiveandone
+		<include refid="Where_List" />
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tfiveandone
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.salary.Fiveandone">
+    insert into tfiveandone (id, fname, scale, 
+      createtime, createname, modifytime, 
+      modifyname)
+    values (#{id,jdbcType=VARCHAR}, #{fname,jdbcType=VARCHAR}, #{scale,jdbcType=DOUBLE}, 
+      #{createtime,jdbcType=DATE}, #{createname,jdbcType=VARCHAR}, #{modifytime,jdbcType=DATE}, 
+      #{modifyname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.salary.Fiveandone">
+    insert into tfiveandone
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fname != null">
+        fname,
+      </if>
+      <if test="scale != null">
+        scale,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="createname != null">
+        createname,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+      <if test="modifyname != null">
+        modifyname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fname != null">
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        #{scale,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="modifyname != null">
+        #{modifyname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.salary.Fiveandone">
+    update tfiveandone
+    <set>
+      <if test="fname != null">
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        scale = #{scale,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="createname != null">
+        createname = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=DATE},
+      </if>
+      <if test="modifyname != null">
+        modifyname = #{modifyname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.salary.Fiveandone">
+    update tfiveandone
+    set fname = #{fname,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=DOUBLE},
+      createtime = #{createtime,jdbcType=DATE},
+      createname = #{createname,jdbcType=VARCHAR},
+      modifytime = #{modifytime,jdbcType=DATE},
+      modifyname = #{modifyname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

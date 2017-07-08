@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.structure.PosMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.structure.Pos">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="addname" jdbcType="VARCHAR" property="addname" />
+    <result column="addtime" jdbcType="DATE" property="addtime" />
+    <result column="updatename" jdbcType="VARCHAR" property="updatename" />
+    <result column="updatetime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pname, addname, addtime, updatename, updatetime
+  </sql>
+  <sql id="Where_List">
+		<where>
+			<if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+			<if test="pname !=null and pname != ''">
+				and pname like concat('%',#{pname},'%')
+			</if>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tpost
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" parameterType="com.chinasofti.model.structure.Pos" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tpost
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'id'">id</when>
+			<when test="sort == 'name'">pname</when>
+			<otherwise>id</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+	<select id="count" parameterType="com.chinasofti.model.structure.Pos" resultType="java.lang.Long">
+		select count(*)
+		from tpost
+		<include refid="Where_List" />
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tpost
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.structure.Pos">
+    insert into tpost (id, pname, addname, 
+      addtime, updatename, updatetime
+      )
+    values (#{id,jdbcType=VARCHAR}, #{pname,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=DATE}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.structure.Pos">
+    insert into tpost
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pname != null">
+        pname,
+      </if>
+      <if test="addname != null">
+        addname,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="updatename != null">
+        updatename,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.structure.Pos">
+    update tpost
+    <set>
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        addname = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        addtime = #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatename != null">
+        updatename = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.structure.Pos">
+    update tpost
+    set pname = #{pname,jdbcType=VARCHAR},
+      addname = #{addname,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=DATE},
+      updatename = #{updatename,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

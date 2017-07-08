@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.admin.UserMapper">
+	<resultMap id="BaseResultMap" type="com.chinasofti.model.admin.User">
+		<id column="cid" jdbcType="VARCHAR" property="cid" />
+		<result column="cname" jdbcType="VARCHAR" property="cname" />
+		<result column="cpwd" jdbcType="VARCHAR" property="cpwd" />
+		<result column="createid" jdbcType="VARCHAR" property="createid" />
+		<result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="modifyid" jdbcType="VARCHAR" property="modifyid" />
+		<result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		cid, cname, cpwd, createid, createtime, modifyid, modifytime
+	</sql>
+	<sql id="Where_List">
+		<where>
+			<if test="cid != null and cid != ''">
+				cid like concat('%',#{cid},'%')
+			</if>
+			<if test="cname !=null and cname != ''">
+				and cname like concat('%',#{cname},'%')
+			</if>
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tuser
+		where cid = #{cid,jdbcType=VARCHAR}
+	</select>
+	<select id="selectList" parameterType="com.chinasofti.model.admin.User" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tuser
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'cid'">cid</when>
+			<when test="sort == 'cname'">cname</when>
+			<otherwise>cid</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+	<select id="count" parameterType="com.chinasofti.model.admin.User" resultType="java.lang.Long">
+		select count(*)
+		from tuser
+		<include refid="Where_List" />
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from tuser
+		where cid = #{cid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.chinasofti.model.admin.User">
+		insert into tuser (cid, cname, cpwd,
+		createid, createtime, modifyid,
+		modifytime)
+		values (#{cid,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, #{cpwd,jdbcType=VARCHAR},
+		#{createid,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{modifyid,jdbcType=VARCHAR},
+		#{modifytime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.chinasofti.model.admin.User">
+		insert into tuser
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="cname != null">
+				cname,
+			</if>
+			<if test="cpwd != null">
+				cpwd,
+			</if>
+			<if test="createid != null">
+				createid,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="modifyid != null">
+				modifyid,
+			</if>
+			<if test="modifytime != null">
+				modifytime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cid != null">
+				#{cid,jdbcType=VARCHAR},
+			</if>
+			<if test="cname != null">
+				#{cname,jdbcType=VARCHAR},
+			</if>
+			<if test="cpwd != null">
+				#{cpwd,jdbcType=VARCHAR},
+			</if>
+			<if test="createid != null">
+				#{createid,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyid != null">
+				#{modifyid,jdbcType=VARCHAR},
+			</if>
+			<if test="modifytime != null">
+				#{modifytime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.admin.User">
+		update tuser
+		<set>
+			<if test="cname != null and cname != ''">
+				cname = #{cname,jdbcType=VARCHAR},
+			</if>
+			<if test="cpwd != null and cpwd != ''">
+				cpwd = #{cpwd,jdbcType=VARCHAR},
+			</if>
+			<if test="createid != null and createid != '' ">
+				createid = #{createid,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null and createtime != '' ">
+				createtime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyid != null and modifyid != '' ">
+				modifyid = #{modifyid,jdbcType=VARCHAR},
+			</if>
+			<if test="modifytime != null and modifytime != '' ">
+				modifytime = #{modifytime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where cid = #{cid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.chinasofti.model.admin.User">
+		update tuser
+		set cname = #{cname,jdbcType=VARCHAR},
+		cpwd = #{cpwd,jdbcType=VARCHAR},
+		createid = #{createid,jdbcType=VARCHAR},
+		createtime = #{createtime,jdbcType=TIMESTAMP},
+		modifyid = #{modifyid,jdbcType=VARCHAR},
+		modifytime = #{modifytime,jdbcType=TIMESTAMP}
+		where cid = #{cid,jdbcType=VARCHAR}
+	</update>
+</mapper>

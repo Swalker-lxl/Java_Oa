@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.performance.KpiMapper">
+	<resultMap id="BaseResultMap" type="com.chinasofti.model.performance.Kpi">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="pername" jdbcType="VARCHAR" property="pername" />
+		<result column="percontent" jdbcType="VARCHAR" property="percontent" />
+		<result column="post" jdbcType="VARCHAR" property="post" />
+		<result column="flag" jdbcType="INTEGER" property="flag" />
+		<result column="createname" jdbcType="VARCHAR" property="createname" />
+		<result column="createtime" jdbcType="DATE" property="createtime" />
+		<result column="modifyname" jdbcType="VARCHAR" property="modifyname" />
+		<result column="modifytime" jdbcType="DATE" property="modifytime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, pername, percontent, post, flag, createname, createtime, modifyname,
+		modifytime
+	</sql>
+	<sql id="Where_List">
+		<where>
+			<if test="percontent != null and percontent != ''">
+				percontent like concat('%',#{percontent},'%')
+			</if>
+			<if test="post !=null and post != ''">
+				and post like concat('%',#{post},'%')
+			</if>
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tkpi
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<select id="count" parameterType="com.chinasofti.model.performance.Kpi"
+		resultType="java.lang.Long">
+		select count(*)
+		from tkpi
+		<include refid="Where_List" />
+	</select>
+	<select id="selectList" parameterType="com.chinasofti.model.performance.Kpi"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tkpi
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'percontent'">percontent</when>
+			<when test="sort == 'post'">post</when>
+			<otherwise>percontent</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from tkpi
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.chinasofti.model.performance.Kpi">
+		insert into tkpi (id, pername, percontent,
+		post, flag, createname,
+		createtime, modifyname, modifytime
+		)
+		values (#{id,jdbcType=VARCHAR}, #{pername,jdbcType=VARCHAR},
+		#{percontent,jdbcType=VARCHAR},
+		#{post,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, #{createname,jdbcType=VARCHAR},
+		#{createtime,jdbcType=DATE}, #{modifyname,jdbcType=VARCHAR},
+		#{modifytime,jdbcType=DATE}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.chinasofti.model.performance.Kpi">
+		insert into tkpi
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="pername != null">
+				pername,
+			</if>
+			<if test="percontent != null">
+				percontent,
+			</if>
+			<if test="post != null">
+				post,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+			<if test="createname != null">
+				createname,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="modifyname != null">
+				modifyname,
+			</if>
+			<if test="modifytime != null">
+				modifytime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="pername != null">
+				#{pername,jdbcType=VARCHAR},
+			</if>
+			<if test="percontent != null">
+				#{percontent,jdbcType=VARCHAR},
+			</if>
+			<if test="post != null">
+				#{post,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="createname != null">
+				#{createname,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=DATE},
+			</if>
+			<if test="modifyname != null">
+				#{modifyname,jdbcType=VARCHAR},
+			</if>
+			<if test="modifytime != null">
+				#{modifytime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.performance.Kpi">
+		update tkpi
+		<set>
+			<if test="pername != null">
+				pername = #{pername,jdbcType=VARCHAR},
+			</if>
+			<if test="percontent != null">
+				percontent = #{percontent,jdbcType=VARCHAR},
+			</if>
+			<if test="post != null">
+				post = #{post,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				flag = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="createname != null">
+				createname = #{createname,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=DATE},
+			</if>
+			<if test="modifyname != null">
+				modifyname = #{modifyname,jdbcType=VARCHAR},
+			</if>
+			<if test="modifytime != null">
+				modifytime = #{modifytime,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.chinasofti.model.performance.Kpi">
+		update tkpi
+		set pername = #{pername,jdbcType=VARCHAR},
+		percontent = #{percontent,jdbcType=VARCHAR},
+		post = #{post,jdbcType=VARCHAR},
+		flag = #{flag,jdbcType=INTEGER},
+		createname = #{createname,jdbcType=VARCHAR},
+		createtime = #{createtime,jdbcType=DATE},
+		modifyname = #{modifyname,jdbcType=VARCHAR},
+		modifytime = #{modifytime,jdbcType=DATE}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

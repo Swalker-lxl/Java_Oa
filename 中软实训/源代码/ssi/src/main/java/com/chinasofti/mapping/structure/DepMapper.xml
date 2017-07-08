@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.structure.DepMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.structure.Dep">
+    <id column="PID" jdbcType="VARCHAR" property="pid" />
+    <result column="PIDCONCLS" jdbcType="VARCHAR" property="pidconcls" />
+    <result column="PNAME" jdbcType="VARCHAR" property="pname" />
+    <result column="CSEQ" jdbcType="DECIMAL" property="cseq" />
+    <result column="CPID" jdbcType="VARCHAR" property="cpid" />
+    <result column="MESSAGE" jdbcType="VARCHAR" property="message" />
+    <collection property="children" ofType="com.chinasofti.model.structure.Dep">
+			<id column="ID" jdbcType="VARCHAR" property="pid" />
+			<result column="ICONCLS" jdbcType="VARCHAR" property="pidconcls" />
+			<result column="NAME" jdbcType="VARCHAR" property="pname" />
+			<result column="SEQ" jdbcType="DECIMAL" property="cseq" />
+			<result column="essage" jdbcType="VARCHAR" property="message" />
+		</collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    PID, PIDCONCLS, PNAME, CSEQ, CPID, MESSAGE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		t1.pid,
+		t1.pidconcls,
+		t1.pname,
+		t1.cseq,
+		t1.message,
+		t1.cpid,
+		t2.pid as id,
+		t2.pidconcls as iconcls,
+		t2.pname as name,
+		t2.cseq as seq,
+		t2.message as essage
+		from tdept t1
+		left join tdept t2
+		on t1.pid = t2.cpid
+		where t1.pid = #{pid,jdbcType=VARCHAR} order by t2.cseq
+	</select>
+	<select id="selectRoot" resultMap="BaseResultMap">
+		select
+		t1.pid,
+		t1.pidconcls,
+		t1.pname,
+		t1.cseq,
+		t1.message,
+		t1.cpid,
+		t2.pid as id,
+		t2.pidconcls as iconcls,
+		t2.pname as name,
+		t2.cseq as seq,
+		t2.message as essage
+		from tdept t1
+		left join tdept t2
+		on t1.pid = t2.cpid
+		where t1.cpid is null order by t2.cseq
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tdept
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.structure.Dep">
+    insert into tdept (PID, PIDCONCLS, PNAME, 
+      CSEQ, CPID, MESSAGE
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{pidconcls,jdbcType=VARCHAR}, #{pname,jdbcType=VARCHAR}, 
+      #{cseq,jdbcType=DECIMAL}, #{cpid,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.structure.Dep">
+    insert into tdept
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="pidconcls != null">
+        PIDCONCLS,
+      </if>
+      <if test="pname != null">
+        PNAME,
+      </if>
+      <if test="cseq != null">
+        CSEQ,
+      </if>
+      <if test="cpid != null">
+        CPID,
+      </if>
+      <if test="message != null">
+        MESSAGE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="pidconcls != null">
+        #{pidconcls,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="cseq != null">
+        #{cseq,jdbcType=DECIMAL},
+      </if>
+      <if test="cpid != null">
+        #{cpid,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.structure.Dep">
+    update tdept
+    <set>
+      <if test="pidconcls != null">
+        PIDCONCLS = #{pidconcls,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null">
+        PNAME = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="cseq != null">
+        CSEQ = #{cseq,jdbcType=DECIMAL},
+      </if>
+      <if test="cpid != null">
+        CPID = #{cpid,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        MESSAGE = #{message,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.structure.Dep">
+    update tdept
+    set PIDCONCLS = #{pidconcls,jdbcType=VARCHAR},
+      PNAME = #{pname,jdbcType=VARCHAR},
+      CSEQ = #{cseq,jdbcType=DECIMAL},
+      CPID = #{cpid,jdbcType=VARCHAR},
+      MESSAGE = #{message,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

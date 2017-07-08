@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.dao.message.MesMapper">
+  <resultMap id="BaseResultMap" type="com.chinasofti.model.message.Mes">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="sendid" jdbcType="VARCHAR" property="sendid" />
+    <result column="sentime" jdbcType="VARCHAR" property="sentime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="flac" jdbcType="VARCHAR" property="flac" />
+    <result column="acceptid" jdbcType="VARCHAR" property="acceptid" />
+    <result column="theme" jdbcType="VARCHAR" property="theme" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sendid, sentime, content, flac, acceptid, theme
+  </sql>
+  <sql id="Where_List">
+		<where>
+			<if test="id != null and id != ''">
+				id like concat('%',#{id},'%')
+			</if>
+			<if test="sentime !=null and sentime != ''">
+				and sentime like concat('%',#{sentime},'%')
+			</if>
+			<if test="acceptid !=null and acceptid != ''">
+				and acceptid like concat('%',#{acceptid},'%')
+			</if>
+		</where>
+	</sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tmessage
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" parameterType="com.chinasofti.model.message.Mes" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tmessage
+		<include refid="Where_List" />
+		order by
+		<choose>
+			<when test="sort == 'id'">id</when>
+			<when test="sort == 'sentime'">sentime</when>
+			<otherwise>id</otherwise>
+		</choose>
+		<choose>
+			<when test="order == 'desc'">desc</when>
+			<otherwise>asc</otherwise>
+		</choose>
+		limit #{page} , #{rows}
+	</select>
+	<select id="count" parameterType="com.chinasofti.model.message.Mes" resultType="java.lang.Long">
+		select count(*)
+		from tmessage
+		<include refid="Where_List" />
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tmessage
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.chinasofti.model.message.Mes">
+    insert into tmessage (id, sendid, sentime, 
+      content, flac, acceptid, 
+      theme)
+    values (#{id,jdbcType=VARCHAR}, #{sendid,jdbcType=VARCHAR}, #{sentime,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{flac,jdbcType=VARCHAR}, #{acceptid,jdbcType=VARCHAR}, 
+      #{theme,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chinasofti.model.message.Mes">
+    insert into tmessage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sendid != null">
+        sendid,
+      </if>
+      <if test="sentime != null">
+        sentime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="flac != null">
+        flac,
+      </if>
+      <if test="acceptid != null">
+        acceptid,
+      </if>
+      <if test="theme != null">
+        theme,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sendid != null">
+        #{sendid,jdbcType=VARCHAR},
+      </if>
+      <if test="sentime != null">
+        #{sentime,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flac != null">
+        #{flac,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptid != null">
+        #{acceptid,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null">
+        #{theme,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chinasofti.model.message.Mes">
+    update tmessage
+    <set>
+      <if test="sendid != null">
+        sendid = #{sendid,jdbcType=VARCHAR},
+      </if>
+      <if test="sentime != null">
+        sentime = #{sentime,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="flac != null">
+        flac = #{flac,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptid != null">
+        acceptid = #{acceptid,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null">
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chinasofti.model.message.Mes">
+    update tmessage
+    set sendid = #{sendid,jdbcType=VARCHAR},
+      sentime = #{sentime,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      flac = #{flac,jdbcType=VARCHAR},
+      acceptid = #{acceptid,jdbcType=VARCHAR},
+      theme = #{theme,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
